@@ -1,0 +1,2 @@
+- [Repository](https://github.com/ItsThompson/CM12005-group-cw)
+- [Report Content](https://docs.google.com/document/d/1VVyCEX2IDd9rKozMCBCuFZqBVpFYvtvvGpTzkjdBeH4/edit?usp=sharing)
