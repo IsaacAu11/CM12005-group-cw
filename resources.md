@@ -3,3 +3,4 @@
 - [UI Brainstorm](https://computingservices-my.sharepoint.com/:wb:/r/personal/syt55_bath_ac_uk/Documents/Whiteboards/CM12005%20-%20Group%20CW%20(Inspiration%20Board).whiteboard?d=w18781328c9504e409f34b21943159e0f&csf=1&web=1&e=79thfy)
 - [Figma UI Prototype](https://www.figma.com/file/ui5dIOgDN9Ul1VNHOT368c/UI-Prototype?type=design&node-id=0%3A1&mode=design&t=EudpOkKenuSDYHGu-1)
 - System Design (/planning/system_design.excalidraw)
+- [Trello Board](https://trello.com/invite/b/GoYjxLgt/ATTI2540efb521091ebc7d3a72950efa566c931CE8D1/cm12005-cw-group)
