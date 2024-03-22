@@ -4,3 +4,4 @@
 - [Figma UI Prototype](https://www.figma.com/file/ui5dIOgDN9Ul1VNHOT368c/UI-Prototype?type=design&node-id=0%3A1&mode=design&t=EudpOkKenuSDYHGu-1)
 - System Design (/planning/system_design.excalidraw)
 - [Trello Board](https://trello.com/invite/b/GoYjxLgt/ATTI2540efb521091ebc7d3a72950efa566c931CE8D1/cm12005-cw-group)
+- [Tailwind Component Cheatsheet](https://tailwindcomponents.com/cheatsheet/)
