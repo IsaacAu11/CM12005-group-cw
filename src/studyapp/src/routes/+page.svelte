@@ -1,7 +1,5 @@
-<h1>Welcome to SvelteKit</h1>
-<h2>Get started by editing this file</h2>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+    import Timer from '../components/Timer.svelte';
+</script>
 
-<h1 class="text-3xl font-bold underline">
-  Hello world!
-</h1>
+<Timer />

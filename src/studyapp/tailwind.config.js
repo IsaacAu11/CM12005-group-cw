@@ -2,7 +2,13 @@
 export default {
     content: ["./src/routes/**/*.svelte", "./src/components/**/*.svelte"],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                'gradient-color-1': '#E6D7FF',
+                'gradient-color-2': '#CEF3FF',
+                'gradient-color-3': '#FFE8FD',
+            },
+        },
     },
     plugins: [require('daisyui')],
     daisyui: {
