@@ -17,8 +17,8 @@ export default {
                 'custom': { // src: https://daisyui.com/theme-generator/
                     "primary": "#DAD7CD",
                     "secondary": "#ffffff",
-                    "accent": "#E0E0E0",
-                    "neutral": "#CEF3FF",
+                    "accent": "#CEF3FF",
+                    "neutral": "#E0E0E0",
                     "base-100": "#E0E0E0",
                     "info": "#E6D7FF",
                     "success": "#91B78F",
