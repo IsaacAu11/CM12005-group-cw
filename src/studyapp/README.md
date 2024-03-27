@@ -1,11 +1,3 @@
-# Running the Project
-1. Make sure you have node v20.11.1 or above
-2. Clone the project (`git clone -b frontend https://github.com/ItsThompson/CM12005-group-cw.git`)
-3. Install all dependencies using (`npm install`)
-4. Run the project (`npm run dev`)
-
----
-
 # create-svelte
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
