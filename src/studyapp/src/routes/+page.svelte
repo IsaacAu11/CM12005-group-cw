@@ -1,14 +1,19 @@
 <script lang="ts">
+	import { fade } from 'svelte/transition';
 	import Timer from '../components/Timer.svelte';
 	import create from '$lib/assets/create.svg';
 	import close from '$lib/assets/close.svg';
 	import { onMount } from 'svelte';
+	import Reflection from '../components/Reflection.svelte';
 	let inStudyMode: boolean = true;
 	let selectedLocation: string = '';
 	let locationModalOpen = false;
 	let newStudyLocation: string = '';
 	let savedLocations: string[] = [];
-    let rerenderSavedLocations = 0;
+	let rerenderSavedLocations = 0;
+	let timerStarted: boolean = false;
+	let timerComplete: boolean = false;
+	let reflectionComplete: boolean = false;
 
 	function toggleStudyMode() {
 		inStudyMode = !inStudyMode;
@@ -31,7 +36,7 @@
 		if (newStudyLocation) {
 			await new Promise((r) => setTimeout(r, 500));
 			savedLocations.push(newStudyLocation);
-            rerenderSavedLocations++;
+			rerenderSavedLocations++;
 			// TODO: Insert new location into database
 			newStudyLocation = '';
 			locationModalOpen = false;
@@ -41,35 +46,46 @@
 
 <div class="h-screen flex flex-col items-center justify-end drop-shadow-2xl">
 	<div class="pt-5 pl-5 pr-5 w-1/2 h-5/6 rounded-lg {bgColor}">
-		<div class="mb-2 flex justify-around md:flex-auto">
-			<div class="grid grid-cols-2 gap-2">
-				<select class="select select-accent w-full max-w-xs bg-accent">
-					<option disabled selected>{selectText}</option>
-                    <!-- NOTE: Needed to use extra variable because key doesnt rerender on list push -->
-					{#key rerenderSavedLocations}
-						{#each savedLocations as location}
-							<option value={location} on:click={() => (selectedLocation = location)}
-								>{location}</option
-							>
-						{/each}
-					{/key}
-				</select>
-				<button
-					class="btn btn-accent aspect-square border-transparent"
-					on:click={() => (locationModalOpen = true)}
+		{#if !timerStarted}
+			<!-- NOTE: Location Dropdown, Location Button and Study/Break Toggle -->
+			<div class="mb-2 flex justify-around md:flex-auto">
+				<div
+					in:fade={{ delay: 500, duration: 150 }}
+					out:fade={{ delay: 50, duration: 250 }}
+					class="grid grid-cols-2 gap-2"
 				>
-					<img class="h-8" src={create} alt="create icon" />
-				</button>
+					<select class="select select-accent w-full max-w-xs bg-accent">
+						<option disabled selected>{selectText}</option>
+						<!-- NOTE: Needed to use extra variable because key doesnt rerender on list update -->
+						{#key rerenderSavedLocations}
+							{#each savedLocations as location}
+								<option value={location} on:click={() => (selectedLocation = location)}
+									>{location}</option
+								>
+							{/each}
+						{/key}
+					</select>
+					<button
+						class="btn btn-accent aspect-square border-transparent"
+						on:click={() => (locationModalOpen = true)}
+					>
+						<img class="h-8" src={create} alt="create icon" />
+					</button>
+				</div>
+				{#if inStudyMode}
+					<button on:click={toggleStudyMode} class="btn btn-accent">Study Mode</button>
+				{:else}
+					<button on:click={toggleStudyMode} class="btn btn-secondary">Break Mode</button>
+				{/if}
 			</div>
-			{#if inStudyMode}
-				<button on:click={toggleStudyMode} class="btn btn-accent">Study Mode</button>
-			{:else}
-				<button on:click={toggleStudyMode} class="btn btn-secondary">Break Mode</button>
-			{/if}
-		</div>
-		{#key inStudyMode}
-			<Timer {inStudyMode} />
-		{/key}
+		{/if}
+		{#if !timerComplete || (timerComplete && reflectionComplete)}
+			{#key inStudyMode}
+				<Timer {inStudyMode} bind:timerStarted bind:timerComplete />
+			{/key}
+		{:else}
+			<Reflection bind:reflectionComplete />
+		{/if}
 	</div>
 </div>
 <dialog class="modal" class:modal-open={locationModalOpen}>

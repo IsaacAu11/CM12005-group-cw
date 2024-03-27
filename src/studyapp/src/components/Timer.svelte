@@ -1,34 +1,49 @@
 <script lang="ts">
-	export let inStudyMode;
+	export let inStudyMode: boolean;
+	export let timerStarted = false;
+	export let timerComplete = false;
 
+	import { fade } from 'svelte/transition';
 	import play from '$lib/assets/play.svg';
 	import pause from '$lib/assets/pause.svg';
 	import { onMount } from 'svelte';
 
-	let durationMinutes = 15;
+	// let durationMinutes = 15; // NOTE: Based on user settings
+	let durationMinutes = 0.02; // TESTING
 
 	if (!inStudyMode) {
-		durationMinutes = 5;
+		durationMinutes = 5; // NOTE: Based on user settings
 	}
 	let durationMs = durationMinutes * 60 * 1000;
 	let remainingTimeMs = durationMs;
 	let formattedTime = formatTime(remainingTimeMs);
 	let isPaused = true;
-	let timerComplete = false;
+
+	function resetTimer() {
+		remainingTimeMs = durationMs;
+		isPaused = true;
+		timerComplete = false;
+		timerStarted = false;
+	}
 
 	onMount(() => {
+        resetTimer();
 		let lastTime = Date.now();
 		setInterval(() => {
-            let currentTime = Date.now();
-            if (!isPaused) {
-                remainingTimeMs = Math.max(0, remainingTimeMs - (currentTime - lastTime));
-                formattedTime = formatTime(remainingTimeMs);
-                lastTime = currentTime;
-            } else {
-                lastTime = Date.now();
-            }
+			let currentTime = Date.now();
+			if (!isPaused) {
+				remainingTimeMs = Math.max(0, remainingTimeMs - (currentTime - lastTime));
+				lastTime = currentTime;
+			} else {
+				lastTime = Date.now();
+			}
+			formattedTime = formatTime(remainingTimeMs);
 
-			if (remainingTimeMs  === 0) {
+			if (remainingTimeMs < durationMs && !timerStarted) {
+				timerStarted = true;
+			}
+
+			if (remainingTimeMs === 0) {
 				timerComplete = true;
 			}
 		});
@@ -52,8 +67,24 @@
 	}
 </script>
 
-<div class="sm:h-1/2 md:h-5/6 flex flex-col items-center justify-center">
+<div
+	in:fade={{ delay: 50, duration: 150 }}
+	out:fade={{ delay: 50, duration: 150 }}
+	class="sm:h-1/2 md:h-5/6 flex flex-col items-center justify-center gap-4"
+>
 	<h1 class="font-bold text-6xl">{formattedTime}</h1>
+	{#if timerStarted}
+		<h3 class="font-bold text-2xl">REMAINING</h3>
+		{#if inStudyMode}
+			<div class="badge badge-accent badge-lg">
+				<p class="font-bold text-lg">STUDY</p>
+			</div>
+		{:else}
+			<div class="badge badge-secondary badge-lg">
+				<p class="font-bold text-lg">BREAK</p>
+			</div>
+		{/if}
+	{/if}
 	<label class="swap m-2">
 		<!-- this hidden checkbox controls the state -->
 		<input type="checkbox" bind:checked={isPaused} />
@@ -66,9 +97,22 @@
 		</div>
 	</label>
 </div>
-<div class="flex flex-col items-center justify-end">
+<div class="flex flex-col items-center justify-end gap-4">
 	<progress class="progress progress-accent w-5/6 h-10" value={remainingTimeMs} max={durationMs}
 	></progress>
+
+	{#if timerStarted}
+		<button
+			in:fade={{ delay: 500, duration: 250 }}
+			out:fade={{ delay: 50, duration: 250 }}
+			class="btn btn-primary w-2/5"
+			on:click={() => {
+				resetTimer();
+			}}
+		>
+			Reset
+		</button>
+	{/if}
 </div>
 
 <svelte:window on:keyup|preventDefault={checkForSpaceBar} />
