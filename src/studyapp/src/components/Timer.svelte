@@ -8,8 +8,8 @@
 	import pause from '$lib/assets/pause.svg';
 	import { onMount } from 'svelte';
 
-	// let durationMinutes = 15; // NOTE: Based on user settings
-	let durationMinutes = 0.02; // TESTING
+	let durationMinutes = 15; // NOTE: Based on user settings
+	// let durationMinutes = 0.02; // TESTING
 
 	if (!inStudyMode) {
 		durationMinutes = 5; // NOTE: Based on user settings
@@ -57,12 +57,6 @@
 			return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 		} else {
 			return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-		}
-	}
-
-	function checkForSpaceBar(event: KeyboardEvent) {
-		if (event.key === ' ') {
-			isPaused = !isPaused;
 		}
 	}
 </script>
@@ -114,5 +108,3 @@
 		</button>
 	{/if}
 </div>
-
-<svelte:window on:keyup|preventDefault={checkForSpaceBar} />
