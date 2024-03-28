@@ -1,14 +1,13 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import Timer from '../components/Timer.svelte';
-	import create from '$lib/assets/create.svg';
 	import { onMount } from 'svelte';
 	import Reflection from '../components/Reflection.svelte';
 	import TodoList from '../components/TodoList.svelte';
 	import NewLocationModal from '../components/NewLocationModal.svelte';
+	import LocationDropdown from '../components/LocationDropdown.svelte';
 
 	let inStudyMode: boolean = true;
-	let selectedLocation: string = '';
 
 	let timerStarted: boolean = false;
 	let timerComplete: boolean = false;
@@ -17,14 +16,13 @@
 
 	let locationModalOpen = false;
 	let savedLocations: string[] = [];
+	let selectedLocation: string = '';
 
 	function toggleStudyMode() {
 		inStudyMode = !inStudyMode;
 	}
 
 	$: bgColor = inStudyMode ? 'bg-secondary' : 'bg-warning';
-
-	$: selectText = selectedLocation ? `${selectedLocation}` : 'Your Saved Study Locations';
 
 	onMount(async () => {
 		savedLocations = await getSavedLocations();
@@ -50,20 +48,11 @@
 						out:fade={{ delay: 50, duration: 250 }}
 						class="grid grid-cols-2 gap-2"
 					>
-						<select class="select select-accent w-full max-w-xs bg-accent">
-							<option disabled selected>{selectText}</option>
-							{#each savedLocations as location}
-								<option value={location} on:click={() => (selectedLocation = location)}
-									>{location}</option
-								>
-							{/each}
-						</select>
-						<button
-							class="btn btn-accent aspect-square border-transparent"
-							on:click={() => (locationModalOpen = true)}
-						>
-							<img class="h-8" src={create} alt="create icon" />
-						</button>
+						<LocationDropdown
+							{savedLocations}
+							{selectedLocation}
+							onOpen={() => (locationModalOpen = true)}
+						/>
 					</div>
 					{#if inStudyMode}
 						<button on:click={toggleStudyMode} class="btn btn-accent">Study Mode</button>
@@ -85,6 +74,7 @@
 
 <NewLocationModal
 	{locationModalOpen}
+	onClose={() => (locationModalOpen = false)}
 	onSubmit={(newLocation) => {
 		savedLocations = [...savedLocations, newLocation];
 		locationModalOpen = false;

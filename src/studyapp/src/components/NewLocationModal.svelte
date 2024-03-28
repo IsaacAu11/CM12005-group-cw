@@ -1,6 +1,7 @@
 <script lang="ts">
+    export let locationModalOpen: boolean;
+	export let onClose: () => void;
 	export let onSubmit: (newLocation: string) => void;
-	export let locationModalOpen: boolean;
 
 	import close from '$lib/assets/close.svg';
 
@@ -17,7 +18,7 @@
 	async function validateAndSubmit() {
 		if (isValidString()) {
 			await new Promise((r) => setTimeout(r, 500)); // TODO: Insert new location into database
-            onSubmit(inputValue);
+			onSubmit(inputValue);
 		}
 	}
 </script>
@@ -27,7 +28,7 @@
 		<div class="flex flex-row justify-between items-center">
 			<h1 class="font-bold text-2xl">NEW LOCATION</h1>
 			<div class="modal-action m-0">
-				<button on:click={() => (locationModalOpen = false)}>
+				<button on:click={onClose}>
 					<!-- NOTE: Handle Modal -->
 					<img class="h-8" src={close} alt="close icon" />
 				</button>
