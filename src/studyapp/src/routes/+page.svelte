@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { fade } from 'svelte/transition';
-	import Timer from '../components/Timer.svelte';
 	import { onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
+    import Timer from '../components/Timer.svelte';
 	import Reflection from '../components/Reflection.svelte';
 	import TodoList from '../components/TodoList.svelte';
 	import NewLocationModal from '../components/NewLocationModal.svelte';
@@ -42,18 +42,16 @@
 		<div class="pt-5 pl-5 pr-5 w-1/2 h-5/6 rounded-lg {bgColor}">
 			{#if !timerStarted}
 				<!-- NOTE: Location Dropdown, Location Button and Study/Break Toggle -->
-				<div class="mb-2 flex justify-around md:flex-auto">
-					<div
-						in:fade={{ delay: 500, duration: 150 }}
-						out:fade={{ delay: 50, duration: 250 }}
-						class="grid grid-cols-2 gap-2"
-					>
-						<LocationDropdown
-							{savedLocations}
-							{selectedLocation}
-							onOpen={() => (locationModalOpen = true)}
-						/>
-					</div>
+				<div
+					class="mb-2 flex justify-around md:flex-auto"
+					in:fade={{ delay: 500, duration: 150 }}
+					out:fade={{ delay: 50, duration: 250 }}
+				>
+					<LocationDropdown
+						{savedLocations}
+						{selectedLocation}
+						onOpen={() => (locationModalOpen = true)}
+					/>
 					{#if inStudyMode}
 						<button on:click={toggleStudyMode} class="btn btn-accent">Study Mode</button>
 					{:else}

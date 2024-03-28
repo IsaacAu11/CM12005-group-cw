@@ -8,15 +8,16 @@
 	$: selectText = selectedLocation ? `${selectedLocation}` : 'Your Saved Study Locations';
 </script>
 
-<select class="select select-accent w-full max-w-xs bg-accent">
-	<option disabled selected>{selectText}</option>
-	{#each savedLocations as location}
-		<option value={location} on:click={() => (selectedLocation = location)}>{location}</option>
-	{/each}
-</select>
-<button
-	class="btn btn-accent aspect-square border-transparent"
-	on:click={onOpen}
+<div
+	class="grid grid-cols-2 gap-2"
 >
-	<img class="h-8" src={create} alt="create icon" />
-</button>
+	<select class="select select-accent w-full max-w-xs bg-accent">
+		<option disabled selected>{selectText}</option>
+		{#each savedLocations as location}
+			<option value={location} on:click={() => (selectedLocation = location)}>{location}</option>
+		{/each}
+	</select>
+	<button class="btn btn-accent aspect-square border-transparent" on:click={onOpen}>
+		<img class="h-8" src={create} alt="create icon" />
+	</button>
+</div>
