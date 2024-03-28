@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
+	import type { LocationData } from '../types';
 	import Timer from '../components/Timer.svelte';
 	import Reflection from '../components/Reflection.svelte';
 	import NewLocationModal from '../components/NewLocationModal.svelte';
@@ -14,8 +15,8 @@
 	let showReflection: boolean = false;
 
 	let locationModalOpen = false;
-	let savedLocations: string[] = [];
-	let selectedLocation: string = '';
+	let savedLocations: LocationData[] = [];
+	let selectedLocation: LocationData | null = null;
 
 	let studyDurationMinutes: number;
 
@@ -31,7 +32,13 @@
 
 	async function getSavedLocations() {
 		await new Promise((r) => setTimeout(r, 500));
-		return ['Library', 'Home', 'Cafe'];
+		let data: LocationData[] = [
+			{ id: 1, name: 'Library' },
+			{ id: 2, name: 'Home' },
+			{ id: 3, name: 'Cafe' }
+		];
+
+		return data;
 	}
 </script>
 
@@ -51,8 +58,11 @@
 					<LocationSelector
 						showCreateButton={true}
 						{savedLocations}
-						{selectedLocation}
 						onOpen={() => (locationModalOpen = true)}
+						onSelected={(location) => {
+							selectedLocation = location;
+                            console.log(selectedLocation);
+						}}
 					/>
 					{#if inStudyMode}
 						<button on:click={toggleStudyMode} class="btn btn-accent">Study Mode</button>
@@ -61,7 +71,7 @@
 					{/if}
 				</div>
 			{/if}
-			{#if !showReflection }
+			{#if !showReflection}
 				{#key inStudyMode}
 					<Timer
 						{inStudyMode}
@@ -76,7 +86,7 @@
 				<Reflection
 					onSubmit={(productivity, mood) => {
 						showReflection = false;
-						console.log(productivity, mood, studyDurationMinutes);
+						console.log(productivity, mood, studyDurationMinutes, selectedLocation);
 						studyDurationMinutes = 0;
 					}}
 				/>

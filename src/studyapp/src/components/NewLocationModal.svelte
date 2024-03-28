@@ -1,14 +1,16 @@
 <script lang="ts">
     export let locationModalOpen: boolean;
 	export let onClose: () => void;
-	export let onSubmit: (newLocation: string) => void;
+	export let onSubmit: (newLocation: LocationData) => void;
+
 
 	import close from '$lib/assets/close.svg';
+    import type { LocationData } from '../types';
 
-	let inputValue: string = '';
+	let newLocationName: string = '';
 
 	function isValidString() {
-		if (inputValue) {
+		if (newLocationName) {
 			return true;
 		}
 
@@ -17,8 +19,10 @@
 
 	async function validateAndSubmit() {
 		if (isValidString()) {
-			await new Promise((r) => setTimeout(r, 500)); // TODO: Insert new location into database
-			onSubmit(inputValue);
+			await new Promise((r) => setTimeout(r, 500)); 
+            let newLocation: LocationData = { id: 9999, name: newLocationName };
+            // TODO: Insert new location into database
+			onSubmit(newLocation);
 		}
 	}
 </script>
@@ -44,7 +48,7 @@
 				type="text"
 				placeholder="ENTER THE NAME OF YOUR NEW STUDY OASIS"
 				class="input input-bordered w-full"
-				bind:value={inputValue}
+				bind:value={newLocationName}
 			/>
 			<button class="btn" on:click={() => validateAndSubmit()}>Submit</button>
 		</form>
