@@ -2,5 +2,5 @@
 </script>
 
 <div class="bg-primary">
-<p>TodoList</p>
+	<p>TodoList</p>
 </div>

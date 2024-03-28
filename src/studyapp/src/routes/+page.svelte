@@ -6,7 +6,7 @@
 	import Reflection from '../components/Reflection.svelte';
 	import NewLocationModal from '../components/NewLocationModal.svelte';
 	import LocationSelector from '../components/LocationSelector.svelte';
-	// import TodoList from '../components/TodoList.svelte';
+	import TodoList from '../components/TodoList.svelte';
 
 	let inStudyMode: boolean = true;
 
@@ -42,9 +42,9 @@
 	}
 </script>
 
-<!-- <layer> -->
-<!-- 	<TodoList /> -->
-<!-- </layer> -->
+<layer>
+	<TodoList />
+</layer>
 <layer>
 	<div class="h-screen flex flex-col items-center justify-end drop-shadow-2xl">
 		<div class="pt-5 pl-5 pr-5 w-1/2 h-5/6 rounded-lg {bgColor}">
@@ -61,7 +61,6 @@
 						onOpen={() => (locationModalOpen = true)}
 						onSelected={(location) => {
 							selectedLocation = location;
-                            console.log(selectedLocation);
 						}}
 					/>
 					{#if inStudyMode}
@@ -86,6 +85,7 @@
 				<Reflection
 					onSubmit={(productivity, mood) => {
 						showReflection = false;
+						// TODO: Insert into database
 						console.log(productivity, mood, studyDurationMinutes, selectedLocation);
 						studyDurationMinutes = 0;
 					}}
