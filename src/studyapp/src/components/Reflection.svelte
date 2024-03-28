@@ -1,16 +1,9 @@
 <script lang="ts">
-	export let reflectionComplete = false;
+	export let onSubmit: (productivity: number, mood: number) => void;
 
 	import { fade } from 'svelte/transition';
-	import { onDestroy } from 'svelte';
 
-	let submitting = false;
-
-	onDestroy(async () => {
-		// resets page
-		reflectionComplete = false;
-		submitting = false;
-	});
+	let loadingSubmit = false;
 
 	let productivty: number = 0;
 	let mood: number = 0;
@@ -21,12 +14,7 @@
 
 	async function validateAndSubmit() {
 		if (inRange(productivty, 0, 10) && inRange(mood, 0, 5)) {
-			submitting = true;
-			await new Promise((r) => setTimeout(r, 500));
-			// TODO: Insert new location into database
-			// console.log('Productivity:', productivty);
-			// console.log('Mood:', mood);
-			reflectionComplete = true;
+			onSubmit(productivty, mood);
 		}
 	}
 </script>
@@ -93,7 +81,7 @@
 		</div>
 	</div>
 
-	{#if submitting}
+	{#if loadingSubmit}
 		<span class="loading loading-dots loading-lg text-primary"></span>
 	{/if}
 	<button class="btn w-1/2" on:click={() => validateAndSubmit()}>Submit</button>

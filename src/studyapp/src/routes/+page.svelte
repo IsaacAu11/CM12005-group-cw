@@ -1,22 +1,23 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
-    import Timer from '../components/Timer.svelte';
+	import Timer from '../components/Timer.svelte';
 	import Reflection from '../components/Reflection.svelte';
-	import TodoList from '../components/TodoList.svelte';
 	import NewLocationModal from '../components/NewLocationModal.svelte';
-	import LocationDropdown from '../components/LocationDropdown.svelte';
+	import LocationSelector from '../components/LocationSelector.svelte';
+	// import TodoList from '../components/TodoList.svelte';
 
 	let inStudyMode: boolean = true;
 
-	let timerStarted: boolean = false;
-	let timerComplete: boolean = false;
+	let timerStarted: boolean = false; // Set by Timer child component
 
-	let reflectionComplete: boolean = false;
+	let showReflection: boolean = false;
 
 	let locationModalOpen = false;
 	let savedLocations: string[] = [];
 	let selectedLocation: string = '';
+
+	let studyDurationMinutes: number;
 
 	function toggleStudyMode() {
 		inStudyMode = !inStudyMode;
@@ -34,9 +35,9 @@
 	}
 </script>
 
-<layer>
-	<TodoList />
-</layer>
+<!-- <layer> -->
+<!-- 	<TodoList /> -->
+<!-- </layer> -->
 <layer>
 	<div class="h-screen flex flex-col items-center justify-end drop-shadow-2xl">
 		<div class="pt-5 pl-5 pr-5 w-1/2 h-5/6 rounded-lg {bgColor}">
@@ -47,7 +48,8 @@
 					in:fade={{ delay: 500, duration: 150 }}
 					out:fade={{ delay: 50, duration: 250 }}
 				>
-					<LocationDropdown
+					<LocationSelector
+						showCreateButton={true}
 						{savedLocations}
 						{selectedLocation}
 						onOpen={() => (locationModalOpen = true)}
@@ -59,12 +61,25 @@
 					{/if}
 				</div>
 			{/if}
-			{#if !timerComplete || (timerComplete && reflectionComplete)}
+			{#if !showReflection }
 				{#key inStudyMode}
-					<Timer {inStudyMode} bind:timerStarted bind:timerComplete />
+					<Timer
+						{inStudyMode}
+						bind:timerStarted
+						onComplete={(durationMinutes) => {
+							showReflection = true;
+							studyDurationMinutes = durationMinutes;
+						}}
+					/>
 				{/key}
 			{:else}
-				<Reflection bind:reflectionComplete />
+				<Reflection
+					onSubmit={(productivity, mood) => {
+						showReflection = false;
+						console.log(productivity, mood, studyDurationMinutes);
+						studyDurationMinutes = 0;
+					}}
+				/>
 			{/if}
 		</div>
 	</div>

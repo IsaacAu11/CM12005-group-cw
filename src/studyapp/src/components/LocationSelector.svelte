@@ -1,4 +1,5 @@
 <script lang="ts">
+    export let showCreateButton: boolean;
 	export let savedLocations: string[];
 	export let selectedLocation: string;
 	export let onOpen: () => void;
@@ -17,7 +18,9 @@
 			<option value={location} on:click={() => (selectedLocation = location)}>{location}</option>
 		{/each}
 	</select>
+    {#if showCreateButton}
 	<button class="btn btn-accent aspect-square border-transparent" on:click={onOpen}>
 		<img class="h-8" src={create} alt="create icon" />
 	</button>
+    {/if}
 </div>

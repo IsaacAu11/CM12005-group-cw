@@ -1,15 +1,15 @@
 <script lang="ts">
 	export let inStudyMode: boolean;
 	export let timerStarted = false;
-	export let timerComplete = false;
+    export let onComplete: (durationMinutes: number) => void;
 
-	import { fade } from 'svelte/transition';
-	import play from '$lib/assets/play.svg';
-	import pause from '$lib/assets/pause.svg';
+    import play from '$lib/assets/play.svg';
+    import pause from '$lib/assets/pause.svg';
 	import { onMount } from 'svelte';
+    import { fade } from 'svelte/transition';
 
-	let durationMinutes = 15; // NOTE: Based on user settings
-	// let durationMinutes = 0.02; // TESTING
+	// let durationMinutes = 15; // NOTE: Based on user settings
+	let durationMinutes = 0.02; // TESTING
 
 	if (!inStudyMode) {
 		durationMinutes = 5; // NOTE: Based on user settings
@@ -22,14 +22,13 @@
 	function resetTimer() {
 		remainingTimeMs = durationMs;
 		isPaused = true;
-		timerComplete = false;
 		timerStarted = false;
 	}
 
 	onMount(() => {
         resetTimer();
 		let lastTime = Date.now();
-		setInterval(() => {
+		const timer = setInterval(() => {
 			let currentTime = Date.now();
 			if (!isPaused) {
 				remainingTimeMs = Math.max(0, remainingTimeMs - (currentTime - lastTime));
@@ -44,7 +43,8 @@
 			}
 
 			if (remainingTimeMs === 0) {
-				timerComplete = true;
+                onComplete(durationMinutes);
+                clearInterval(timer);
 			}
 		});
 	});
