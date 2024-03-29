@@ -63,8 +63,14 @@
 		studyDurationMinutes: number,
 		selectedLocation: LocationData | null
 	) {
+        await new Promise((r) => setTimeout(r, 500));
 		console.log(productivity, mood, studyDurationMinutes, selectedLocation);
 	}
+
+    async function updateTodosInDatabase(completedTodos: TodoItem[]) {
+        await new Promise((r) => setTimeout(r, 500));
+        console.log('Updated todos:', completedTodos);
+    }
 </script>
 
 <div class="h-screen flex items-center justify-between">
@@ -110,6 +116,8 @@
 					onSubmit={async (productivity, mood) => {
 						// TODO: Insert into database
 						await insertIntoDatabase(productivity, mood, studyDurationMinutes, selectedLocation);
+						todos = todos.filter((todo) => !todo.completed);
+						await updateTodosInDatabase(todos);
 						showReflection = false;
 						studyDurationMinutes = 0;
 					}}
@@ -121,7 +129,6 @@
 	<TodoList
 		{todos}
 		onOpen={() => {
-			console.log('here');
 			newTodoModalOpen = true;
 		}}
 	/>

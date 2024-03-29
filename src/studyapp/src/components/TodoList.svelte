@@ -10,17 +10,21 @@
 
 	<div class="h-full flex flex-col justify-between gap-2">
 		<div class="mt-5 overflow-auto">
-			{#each todos as todoItem}
-				<div class="flex gap-2 items-center p-2 bg-secondary rounded-lg my-2">
-					<input
-						type="checkbox"
-						checked={todoItem.completed}
-						class="checkbox"
-						on:change={() => (todoItem.completed = !todoItem.completed)}
-					/>
-					<p>{todoItem.text}</p>
-				</div>
-			{/each}
+			{#if todos.length === 0}
+				<p class="text-center">Write down what you want to acheive this session!</p>
+			{:else}
+				{#each todos as todoItem}
+					<div class="flex gap-2 items-center p-2 bg-secondary rounded-lg my-2">
+						<input
+							type="checkbox"
+							checked={todoItem.completed}
+							class="checkbox"
+							on:change={() => (todoItem.completed = !todoItem.completed)}
+						/>
+						<p>{todoItem.text}</p>
+					</div>
+				{/each}
+			{/if}
 		</div>
 		<button class="btn btn-accent mb-10" on:click={onOpen}>Add Todo</button>
 	</div>
