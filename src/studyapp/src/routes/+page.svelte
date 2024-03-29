@@ -42,11 +42,8 @@
 	}
 </script>
 
-<layer>
-	<TodoList />
-</layer>
-<layer>
-	<div class="h-screen flex flex-col items-center justify-end drop-shadow-2xl">
+<div class="h-screen flex items-center justify-between">
+	<div class="w-full h-screen flex flex-col items-center justify-end drop-shadow-2xl">
 		<div class="pt-5 pl-5 pr-5 w-1/2 h-5/6 rounded-lg {bgColor}">
 			{#if !timerStarted}
 				<!-- NOTE: Location Dropdown, Location Button and Study/Break Toggle -->
@@ -93,7 +90,9 @@
 			{/if}
 		</div>
 	</div>
-</layer>
+
+	<TodoList />
+</div>
 
 <NewLocationModal
 	{locationModalOpen}
