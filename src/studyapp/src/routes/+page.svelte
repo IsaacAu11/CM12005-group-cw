@@ -43,8 +43,8 @@
 </script>
 
 <div class="h-screen flex items-center justify-between">
-	<div class="w-full h-screen flex flex-col items-center justify-end drop-shadow-2xl">
-		<div class="pt-5 pl-5 pr-5 w-1/2 h-5/6 rounded-lg {bgColor}">
+	<div class="w-full h-screen flex flex-col items-center justify-end">
+		<div class="pt-5 pl-5 pr-5 w-1/2 h-5/6 rounded-lg {bgColor} drop-shadow-2xl">
 			{#if !timerStarted}
 				<!-- NOTE: Location Dropdown, Location Button and Study/Break Toggle -->
 				<div
@@ -67,6 +67,8 @@
 					{/if}
 				</div>
 			{/if}
+            <!-- TODO:  -->
+            <p class="text-center">WEEKLY GOAL THING HERE</p> 
 			{#if !showReflection}
 				{#key inStudyMode}
 					<Timer
