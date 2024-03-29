@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
-	import type { LocationData } from '../types';
+	import type { LocationData, TodoItem } from '../types';
 	import Timer from '../components/Timer.svelte';
 	import Reflection from '../components/Reflection.svelte';
-	import NewLocationModal from '../components/NewLocationModal.svelte';
+	import NewLocationModal from '../components/modals/NewLocationModal.svelte';
 	import LocationSelector from '../components/LocationSelector.svelte';
 	import TodoList from '../components/TodoList.svelte';
+	import NewTodoModal from '../components/modals/NewTodoModal.svelte';
 
 	let inStudyMode: boolean = true;
 
@@ -18,6 +19,9 @@
 	let savedLocations: LocationData[] = [];
 	let selectedLocation: LocationData | null = null;
 
+	let newTodoModalOpen = false;
+	let todos: TodoItem[] = [];
+
 	let studyDurationMinutes: number;
 
 	function toggleStudyMode() {
@@ -28,10 +32,11 @@
 
 	onMount(async () => {
 		savedLocations = await getSavedLocations();
+		todos = await getIncompleteTodos();
 	});
 
 	async function getSavedLocations() {
-		await new Promise((r) => setTimeout(r, 500));
+		await new Promise((r) => setTimeout(r, 50));
 		let data: LocationData[] = [
 			{ id: 1, name: 'Library' },
 			{ id: 2, name: 'Home' },
@@ -39,6 +44,26 @@
 		];
 
 		return data;
+	}
+
+	async function getIncompleteTodos() {
+		await new Promise((r) => setTimeout(r, 50));
+		let data: TodoItem[] = [
+			{ id: 1, text: 'Learn Svelte', completed: false },
+			{ id: 2, text: 'Build a Svelte app', completed: false },
+			{ id: 3, text: 'Deploy the app', completed: false }
+		];
+
+		return data;
+	}
+
+	async function insertIntoDatabase(
+		productivity: number,
+		mood: number,
+		studyDurationMinutes: number,
+		selectedLocation: LocationData | null
+	) {
+		console.log(productivity, mood, studyDurationMinutes, selectedLocation);
 	}
 </script>
 
@@ -67,8 +92,8 @@
 					{/if}
 				</div>
 			{/if}
-            <!-- TODO:  -->
-            <p class="text-center">WEEKLY GOAL THING HERE</p> 
+			<!-- TODO:  -->
+			<p class="text-center">WEEKLY GOAL THING HERE</p>
 			{#if !showReflection}
 				{#key inStudyMode}
 					<Timer
@@ -82,10 +107,10 @@
 				{/key}
 			{:else}
 				<Reflection
-					onSubmit={(productivity, mood) => {
-						showReflection = false;
+					onSubmit={async (productivity, mood) => {
 						// TODO: Insert into database
-						console.log(productivity, mood, studyDurationMinutes, selectedLocation);
+						await insertIntoDatabase(productivity, mood, studyDurationMinutes, selectedLocation);
+						showReflection = false;
 						studyDurationMinutes = 0;
 					}}
 				/>
@@ -93,7 +118,13 @@
 		</div>
 	</div>
 
-	<TodoList />
+	<TodoList
+		{todos}
+		onOpen={() => {
+			console.log('here');
+			newTodoModalOpen = true;
+		}}
+	/>
 </div>
 
 <NewLocationModal
@@ -102,5 +133,14 @@
 	onSubmit={(newLocation) => {
 		savedLocations = [...savedLocations, newLocation];
 		locationModalOpen = false;
+	}}
+/>
+
+<NewTodoModal
+	{newTodoModalOpen}
+	onClose={() => (newTodoModalOpen = false)}
+	onSubmit={(newTodo) => {
+		todos = [...todos, newTodo];
+		newTodoModalOpen = false;
 	}}
 />

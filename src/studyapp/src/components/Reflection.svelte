@@ -14,7 +14,9 @@
 
 	async function validateAndSubmit() {
 		if (inRange(productivty, 0, 10) && inRange(mood, 0, 5)) {
+            loadingSubmit = true;
 			onSubmit(productivty, mood);
+            loadingSubmit = false;
 		}
 	}
 </script>
@@ -62,7 +64,7 @@
 		<div>
 			<label for="mood" class="label font-medium text-2xl">Mood: ({mood}/5)</label>
 			<input
-				id="productivity"
+				id="mood"
 				type="range"
 				min="0"
 				max="5"
