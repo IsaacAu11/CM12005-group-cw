@@ -5,7 +5,6 @@
 </script>
 
 <div class="bg-primary w-1/3 h-4/6 p-5 rounded-l-lg drop-shadow-lg">
-	<!-- TODO: THIS IS NEXT -->
 	<h1 class="text-center font-bold text-2xl">Todo List</h1>
 
 	<div class="h-full flex flex-col justify-between gap-2">

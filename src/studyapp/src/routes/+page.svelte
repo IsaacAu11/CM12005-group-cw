@@ -8,6 +8,8 @@
 	import LocationSelector from '../components/LocationSelector.svelte';
 	import TodoList from '../components/TodoList.svelte';
 	import NewTodoModal from '../components/modals/NewTodoModal.svelte';
+	import GoalSetting from '../components/GoalSetting.svelte';
+	import ChangeProductivityGoalModal from '../components/modals/ChangeProductivityGoalModal.svelte';
 
 	let inStudyMode: boolean = true;
 
@@ -24,6 +26,9 @@
 
 	let studyDurationMinutes: number;
 
+	let productivityGoalModalOpen = false;
+	let productivityScore: number = 0;
+
 	function toggleStudyMode() {
 		inStudyMode = !inStudyMode;
 	}
@@ -33,10 +38,11 @@
 	onMount(async () => {
 		savedLocations = await getSavedLocations();
 		todos = await getIncompleteTodos();
+		productivityScore = await getProductivityScoreTarget();
 	});
 
 	async function getSavedLocations() {
-        // TODO: Database Operation
+		// TODO: Database Operation
 		await new Promise((r) => setTimeout(r, 50));
 		let data: LocationData[] = [
 			{ id: 1, name: 'Library' },
@@ -48,7 +54,7 @@
 	}
 
 	async function getIncompleteTodos() {
-        // TODO: Database Operation
+		// TODO: Database Operation
 		await new Promise((r) => setTimeout(r, 50));
 		let data: TodoItem[] = [
 			{ id: 1, text: 'Learn Svelte', completed: false },
@@ -57,6 +63,12 @@
 		];
 
 		return data;
+	}
+
+	async function getProductivityScoreTarget() {
+		// TODO: Database Operation
+		await new Promise((r) => setTimeout(r, 50));
+		return 8;
 	}
 
 	async function insertIntoDatabase(
@@ -78,58 +90,64 @@
 </script>
 
 <div class="h-screen flex items-center justify-between">
-	<div class="w-full h-screen flex flex-col items-center justify-end">
-		<div class="pt-5 pl-5 pr-5 w-1/2 h-5/6 rounded-lg {bgColor} drop-shadow-2xl">
-			{#if !timerStarted}
-				<!-- NOTE: Location Dropdown, Location Button and Study/Break Toggle -->
-				<div
-					class="mb-2 flex justify-around md:flex-auto"
-					in:fade={{ delay: 500, duration: 150 }}
-					out:fade={{ delay: 50, duration: 250 }}
-				>
-					<LocationSelector
-						showCreateButton={true}
-						{savedLocations}
-						onOpen={() => (locationModalOpen = true)}
-						onSelected={(location) => {
-							selectedLocation = location;
-						}}
+	<!-- Main Component and Todo Component -->
+	<div class="w-full h-full flex flex-col items-center justify-end">
+		<div class="pt-5 px-5 w-3/4 h-5/6 rounded-lg {bgColor} drop-shadow-2xl">
+			<div class="h-full flex flex-col items-center">
+				{#if !timerStarted}
+					<!-- NOTE: Location Dropdown, Location Button and Study/Break Toggle -->
+					<div
+						class="mb-2 flex justify-around md:flex-auto"
+						in:fade={{ delay: 500, duration: 150 }}
+						out:fade={{ delay: 50, duration: 250 }}
+					>
+						<LocationSelector
+							showCreateButton={true}
+							{savedLocations}
+							onOpen={() => (locationModalOpen = true)}
+							onSelected={(location) => {
+								selectedLocation = location;
+							}}
+						/>
+						{#if inStudyMode}
+							<button on:click={toggleStudyMode} class="btn btn-accent">Study Mode</button>
+						{:else}
+							<button on:click={toggleStudyMode} class="btn btn-secondary">Break Mode</button>
+						{/if}
+					</div>
+				{/if}
+				{#if !showReflection}
+					<GoalSetting
+						score={productivityScore}
+						onOpen={() => (productivityGoalModalOpen = true)}
 					/>
-					{#if inStudyMode}
-						<button on:click={toggleStudyMode} class="btn btn-accent">Study Mode</button>
-					{:else}
-						<button on:click={toggleStudyMode} class="btn btn-secondary">Break Mode</button>
-					{/if}
-				</div>
-			{/if}
-			<!-- TODO:  -->
-			<p class="text-center">WEEKLY GOAL THING HERE</p>
-			{#if !showReflection}
-				{#key inStudyMode}
-					<Timer
-						{inStudyMode}
-						bind:timerStarted
-						onComplete={(durationMinutes) => {
-							showReflection = true;
-							studyDurationMinutes = durationMinutes;
-						}}
-					/>
-				{/key}
-			{:else}
-				<Reflection
-					onSubmit={async (productivity, mood) => {
-						await insertIntoDatabase(productivity, mood, studyDurationMinutes, selectedLocation);
+				{/if}
+				{#if !showReflection}
+					{#key inStudyMode}
+						<Timer
+							{inStudyMode}
+							bind:timerStarted
+							onComplete={(durationMinutes) => {
+								showReflection = true;
+								studyDurationMinutes = durationMinutes;
+							}}
+						/>
+					{/key}
+				{:else}
+					<Reflection
+						onSubmit={async (productivity, mood) => {
+							await insertIntoDatabase(productivity, mood, studyDurationMinutes, selectedLocation);
 
-						todos = todos.filter((todo) => !todo.completed);
-						await updateTodosInDatabase(todos);
-						showReflection = false;
-						studyDurationMinutes = 0;
-					}}
-				/>
-			{/if}
+							todos = todos.filter((todo) => !todo.completed);
+							await updateTodosInDatabase(todos);
+							showReflection = false;
+							studyDurationMinutes = 0;
+						}}
+					/>
+				{/if}
+			</div>
 		</div>
 	</div>
-
 	<TodoList
 		{todos}
 		onOpen={() => {
@@ -153,5 +171,14 @@
 	onSubmit={(newTodo) => {
 		todos = [...todos, newTodo];
 		newTodoModalOpen = false;
+	}}
+/>
+
+<ChangeProductivityGoalModal
+	{productivityGoalModalOpen}
+	onClose={() => (productivityGoalModalOpen = false)}
+	onSubmit={async (newGoal) => {
+		productivityScore = newGoal;
+		productivityGoalModalOpen = false;
 	}}
 />

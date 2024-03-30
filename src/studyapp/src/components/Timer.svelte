@@ -1,12 +1,12 @@
 <script lang="ts">
 	export let inStudyMode: boolean;
 	export let timerStarted = false;
-    export let onComplete: (durationMinutes: number) => void;
+	export let onComplete: (durationMinutes: number) => void;
 
-    import play from '$lib/assets/play.svg';
-    import pause from '$lib/assets/pause.svg';
+	import play from '$lib/assets/play.svg';
+	import pause from '$lib/assets/pause.svg';
 	import { onMount } from 'svelte';
-    import { fade } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 
 	// let durationMinutes = 15; // NOTE: Based on user settings
 	let durationMinutes = 0.02; // TESTING
@@ -26,7 +26,7 @@
 	}
 
 	onMount(() => {
-        resetTimer();
+		resetTimer();
 		let lastTime = Date.now();
 		const timer = setInterval(() => {
 			let currentTime = Date.now();
@@ -43,8 +43,8 @@
 			}
 
 			if (remainingTimeMs === 0) {
-                onComplete(durationMinutes);
-                clearInterval(timer);
+				onComplete(durationMinutes);
+				clearInterval(timer);
 			}
 		});
 	});
@@ -64,7 +64,7 @@
 <div
 	in:fade={{ delay: 50, duration: 150 }}
 	out:fade={{ delay: 50, duration: 150 }}
-	class="sm:h-1/2 md:h-5/6 flex flex-col items-center justify-center gap-4"
+	class="sm:h-1/2 md:h-5/6 flex flex-col items-center justify-center gap-4 w-full"
 >
 	<h1 class="font-bold text-6xl">{formattedTime}</h1>
 	{#if timerStarted}
@@ -91,7 +91,7 @@
 		</div>
 	</label>
 </div>
-<div class="flex flex-col items-center justify-end gap-4">
+<div class="flex flex-col items-center justify-end gap-4 w-full mb-5">
 	<progress class="progress progress-accent w-5/6 h-10" value={remainingTimeMs} max={durationMs}
 	></progress>
 
