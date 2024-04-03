@@ -53,7 +53,7 @@
 	});
 
 	async function getInsights() {
-        // TODO: Backend Calculation
+		// TODO: Backend Calculation
 		await new Promise((r) => setTimeout(r, 50));
 		insights = {
 			studyHoursAndProductivity: 0.8,
