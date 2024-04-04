@@ -1,6 +1,8 @@
 <script>
 	import StudyLog from '../../components/StudyLog.svelte';
+	import StudyTimeThisMonth from '../../components/StudyTimeThisMonth.svelte';
 	import StudyTimeThisWeek from '../../components/StudyTimeThisWeek.svelte';
+	import MonthHeatMap from '../../components/MonthHeatMap.svelte';
 </script>
 
 <div class="h-screen flex items-center justify-between">
@@ -18,19 +20,21 @@
 				style="border-;margin-left: 80px;margin-right: 80px; background-color: white; margin-top: 50px"
 			>
 				<div class="flex flex-row content-stretch pb-5 gap-5">
-					<div class="bg-neutral w-2/3 rounded-lg">
+					<div class="bg-neutral w-1/2 rounded-lg">
+						<h3 class="text-center font-bold text-2xl py-2">Study Time This Week</h3>
 						<StudyTimeThisWeek />
 					</div>
-					<div class="bg-neutral w-1/3 rounded-lg">Study time this month</div>
+					<div class="bg-neutral w-1/2 rounded-lg">
+						<h3 class="text-center font-bold text-2xl py-2">Study Time This Month</h3>
+						<StudyTimeThisMonth />
+					</div>
 				</div>
 				<div class="flex flex-row gap-5 items-stretch">
-					<div class="w-2/5 bg-neutral" style="height:200px">
-                    <!-- TODO: Remove height styling once component is complete.  -->
-						Mood this month
+					<div class="w-2/5 bg-neutral rounded-lg px-3">
+						<h3 class="text-center font-bold text-2xl py-2">Study Time This Month</h3>
+                        <MonthHeatMap />
 					</div>
-					<div class="w-3/5 bg-neutral">
-						Your study locations
-					</div>
+					<div class="w-3/5 bg-neutral rounded-lg" style="height:200px">Your study locations</div>
 				</div>
 			</div>
 		</div>

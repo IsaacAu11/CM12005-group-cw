@@ -8,4 +8,7 @@ export type TodoItem = {
     text: string;
     completed: boolean;
 }
-
+ export type Day = {
+    fullName: string;
+    shortName: string;
+ }
