@@ -12,19 +12,19 @@
 		</summary>
 		<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
 			<li class="m-2">
-				<a href={'/'}>
+				<a rel="external" href="/">
 					<img class="h-8" src={home} alt="home icon" />
 					Home</a
 				>
 			</li>
 			<li class="m-2">
-				<a href={'/stats'}>
+				<a rel="external" href="/stats">
 					<img class="h-8" src={stats} alt="stats icon" />
 					Stats</a
 				>
 			</li>
 			<li class="m-2">
-				<a href={'/insights'}>
+				<a rel="external" href="/insights">
 					<img class="h-8" src={insights} alt="insights icon" />
 					Insights</a
 				>
