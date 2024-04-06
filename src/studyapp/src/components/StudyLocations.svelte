@@ -8,7 +8,6 @@
 
 	let locations: StudyLocationStats[] = [];
 
-	$: console.log(locations);
 
 	async function getData() {
 		// TODO: Backend Calculation
