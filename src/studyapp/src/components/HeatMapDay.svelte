@@ -4,11 +4,14 @@
 	// value will be from 0-5
 
 	function displayValue(value: number): string {
+		if (value === null || value === undefined) {
+			return '';
+		}
 		return value.toFixed(2);
 	}
 
 	function getColor(value: number | null): string {
-		if (value === null) {
+		if (value === null || value === undefined) {
 			return 'bg-gray-200';
 		} else if (value < 3) {
 			return 'bg-red-200';

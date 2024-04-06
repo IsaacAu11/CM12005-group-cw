@@ -3,6 +3,7 @@
 	import StudyTimeThisMonth from '../../components/StudyTimeThisMonth.svelte';
 	import StudyTimeThisWeek from '../../components/StudyTimeThisWeek.svelte';
 	import MonthHeatMap from '../../components/MonthHeatMap.svelte';
+	import StudyLocations from '../../components/StudyLocations.svelte';
 </script>
 
 <div class="h-screen flex items-center justify-between">
@@ -29,12 +30,15 @@
 						<StudyTimeThisMonth />
 					</div>
 				</div>
-				<div class="flex flex-row gap-5 items-stretch">
+				<div class="flex flex-row gap-5 h-80">
 					<div class="w-2/5 bg-neutral rounded-lg px-3">
 						<h3 class="text-center font-bold text-2xl py-2">Mood This Month</h3>
 						<MonthHeatMap />
 					</div>
-					<div class="w-3/5 bg-neutral rounded-lg" style="height:200px">Your study locations</div>
+					<div class="w-3/5 bg-neutral rounded-lg px-3">
+						<h3 class="text-center font-bold text-2xl py-2">Your Study Locations</h3>
+						<StudyLocations />
+					</div>
 				</div>
 			</div>
 		</div>

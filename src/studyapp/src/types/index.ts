@@ -1,4 +1,4 @@
-export type LocationData = {
+export type LocationDataSelect = {
     id: number;
     name: string;
 }
@@ -11,4 +11,10 @@ export type TodoItem = {
  export type Day = {
     fullName: string;
     shortName: string;
+ }
+
+ export type StudyLocationStats = {
+     name: string;
+     averageMood: number;
+     averageProductivity: number;
  }
