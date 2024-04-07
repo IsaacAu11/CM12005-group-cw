@@ -18,7 +18,7 @@
 				gain valuable knowledge to elevate your academic success to new heights!
 			</p>
 			<div
-				style="border-;margin-left: 80px;margin-right: 80px; background-color: white; margin-top: 50px"
+				style="border-;margin-left: 80px;margin-right: 80px; background-color: white; margin-top: 25px"
 			>
 				<div class="flex flex-row content-stretch pb-5 gap-5">
 					<div class="bg-neutral w-1/2 rounded-lg">
